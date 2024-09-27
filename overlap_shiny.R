@@ -4,6 +4,7 @@ library(dplyr)
 library(leaflet)
 library(shiny)
 library(htmltools)
+library(htmlwidgets)
 
 # Read the image file and encode it to base64
 img <- readBin("www/iceslogo.png", "raw", file.info("www/iceslogo.png")$size)
