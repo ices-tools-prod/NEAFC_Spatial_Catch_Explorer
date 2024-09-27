@@ -102,3 +102,20 @@ grid_data <- merged_data %>%
 }
 
 grid_data <- grid_out
+
+
+# Convert grid_data to an sf object
+grid_data_sf <- st_as_sf(grid_data, coords = c("lon_bin", "lat_bin"), crs = 4326)
+
+neafc_areas <- sf::st_read("NEAFC_areas.shp")
+
+# Filter grid_data to only include cells inside neafc_areas
+filtered_grid_data <- grid_data_sf %>%
+  filter(lengths(st_intersects(., neafc_areas)) > 0)
+
+# If you want to convert back to a regular dataframe (tibble)
+grid_data <- filtered_grid_data %>%
+  st_drop_geometry() %>%
+  bind_cols(st_coordinates(filtered_grid_data) %>% as_tibble()) %>%
+  rename(lon_bin = X, lat_bin = Y)
+
