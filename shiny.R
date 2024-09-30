@@ -11,10 +11,13 @@ mkdir("shiny/data")
 cp(taf.data.path("www"), "shiny")
 
 # copy NEAFC area shapefile
-cp(taf.data.path("NEAFC_areas"), "shiny")
+cp(taf.data.path("NEAFC_areas"), "shiny/data")
 
 # copy in server data
 cp("data/grid_data.RData", "shiny/data")
+
+# copy in utilities
+cp("utilities.R", "shiny/utilities.R")
 
 # copy in server and ui scripts
 cp("shiny_ui.R", "shiny/ui.R")

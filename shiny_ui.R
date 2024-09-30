@@ -7,33 +7,24 @@ library(shiny)
 library(htmltools)
 library(htmlwidgets)
 
-# load grid_data
-load("data/grid_data.RData", envir = .GlobalEnv)
+# utilities
+source("utilities.R")
 
 # Read the image file and encode it to base64
 img <- readBin("www/iceslogo.png", "raw", file.info("www/iceslogo.png")$size)
 img_base64 <- base64encode(img)
 
 # Read and process the shapefile
-neafc_areas <- sf::st_read("data/NEAFC_areas.shp") %>%
+neafc_areas <- sf::st_read("data/NEAFC_areas/NEAFC_areas.shp", quiet = TRUE) %>%
   sf::st_transform(4326) # Transform to WGS84 (EPSG:4326)
+
+# load grid_data
+load("data/grid_data.RData", envir = .GlobalEnv)
 
 # Assuming grid_data is already created and includes a 'year' column
 # Get unique species list and years
 species_list <- sort(unique(grid_data$species))
 year_list <- sort(unique(grid_data$year))
-
-get_cell_color <- function(catch1, catch2) {
-  dplyr::case_when(
-    catch1 > 0 & catch2 > 0 ~ "purple", # Both species present
-    catch1 > 0 ~ "red", # Only species 1 present
-    catch2 > 0 ~ "blue", # Only species 2 present
-    TRUE ~ "transparent" # Neither species present
-  )
-}
-
-# load app data
-load("data/map_data.RData", envir = .GlobalEnv)
 
 ui <- fluidPage(
   tags$head(
