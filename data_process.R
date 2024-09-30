@@ -8,15 +8,17 @@ library(lubridate)
 library(htmlwidgets)
 library(sf)
 
+mkdir("data")
+
 grid_out <- NULL
 
 for (i in 2018:2023) {
-  vms <- read.csv(paste0("data/NEAFC_TACSAT_", i, ".csv"))
+  vms <- read.csv(paste0("boot/data/NEAFC/NEAFC_TACSAT_", i, ".csv"))
 
   vms <- vms %>%
     filter(SI_SP >= 1 & SI_SP <= 6)
 
-  catch <- read.csv(paste0("data/NEAFC_EFLALO_", i, ".csv"))
+  catch <- read.csv(paste0("boot/data/NEAFC/NEAFC_EFLALO_", i, ".csv"))
 
 
   # Helper function to convert date and time strings to POSIXct
@@ -107,7 +109,10 @@ grid_data <- grid_out
 # Convert grid_data to an sf object
 grid_data_sf <- st_as_sf(grid_data, coords = c("lon_bin", "lat_bin"), crs = 4326)
 
-neafc_areas <- sf::st_read("NEAFC_areas.shp")
+neafc_areas <- sf::st_read("boot/data/NEAFC_areas/NEAFC_areas.shp")
+neafc_areas <- st_transform(neafc_areas, st_crs(grid_data_sf))
+
+sf::sf_use_s2(FALSE)
 
 # Filter grid_data to only include cells inside neafc_areas
 filtered_grid_data <- grid_data_sf %>%
@@ -118,3 +123,5 @@ grid_data <- filtered_grid_data %>%
   st_drop_geometry() %>%
   bind_cols(st_coordinates(filtered_grid_data) %>% as_tibble()) %>%
   rename(lon_bin = X, lat_bin = Y)
+
+save(grid_data, file = "data/grid_data.RData")
