@@ -15,8 +15,7 @@ img <- readBin("www/iceslogo.png", "raw", file.info("www/iceslogo.png")$size)
 img_base64 <- base64encode(img)
 
 # Read and process the shapefile
-neafc_areas <- sf::st_read("data/NEAFC_areas/NEAFC_areas.shp", quiet = TRUE) %>%
-  sf::st_transform(4326) # Transform to WGS84 (EPSG:4326)
+load("data/neafc_areas.RData", envir = .GlobalEnv)
 
 # load grid_data
 load("data/grid_data.RData", envir = .GlobalEnv)

@@ -109,8 +109,7 @@ grid_data <- grid_out
 # Convert grid_data to an sf object
 grid_data_sf <- st_as_sf(grid_data, coords = c("lon_bin", "lat_bin"), crs = 4326)
 
-neafc_areas <- sf::st_read("boot/data/NEAFC_areas/NEAFC_areas.shp")
-neafc_areas <- st_transform(neafc_areas, st_crs(grid_data_sf))
+load("data/neafc_areas.RData")
 
 sf::sf_use_s2(FALSE)
 

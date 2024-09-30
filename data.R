@@ -7,4 +7,6 @@ library(icesTAF)
 
 mkdir("data")
 
+source.taf("data_neafc_areas.R")
+
 source.taf("data_process.R")
