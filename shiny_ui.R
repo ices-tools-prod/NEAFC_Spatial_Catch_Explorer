@@ -100,10 +100,10 @@ ui <- fluidPage(
       tags$h5("Recommended citation", 
              style = "font-weight: bold; margin-bottom: 10px;"),
       tags$p(
-        "ICES. 2024. NEAFC Request on discarding in the NEAFC regulatory areas. In Report of the ICES Advisory Committee, 2024. ICES Advice 2024, sr.2024.17, ",
+        "ICES NEAFC Catch Explorer, [date accessed]. ICES, Copenhagen, Denmark.",
         tags$a(
-          href = "https://doi.org/10.17895/ices.advice.26947132",
-          "https://doi.org/10.17895/ices.advice.26947132",
+          href = "https://www.ices.dk/advice/Pages/NEAFC-catch-explorer.aspx",
+          "https://www.ices.dk/advice/Pages/NEAFC-catch-explorer.aspx",
           target = "_blank",
           style = "word-wrap: break-word;"
         ),
