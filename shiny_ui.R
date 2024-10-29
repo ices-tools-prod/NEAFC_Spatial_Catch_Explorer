@@ -36,6 +36,13 @@ ui <- fluidPage(
         left: 30px;
         z-index: 1000;
       }
+      .btn-block {
+      margin-bottom: 10px;
+      width: 100%;
+    }
+    .btn-block:hover {
+      background-color: #e9ecef;
+    }
       .logo img {
         max-height: 50px;
         max-width: 150px;
@@ -65,19 +72,45 @@ ui <- fluidPage(
       checkboxInput("single_species", "Single Species View", value = FALSE),
       conditionalPanel(
         condition = "!input.single_species",
-        selectInput("species1", "Select Species 1", choices = species_list),
-        selectInput("species2", "Select Species 2", choices = species_list)
+        selectInput("species1", "Select Species 1", choices = species_list, selected = "Clupea harengus"),
+        selectInput("species2", "Select Species 2", choices = species_list, selected = "Scomber scombrus")
       ),
       conditionalPanel(
         condition = "input.single_species",
-        selectInput("species_single", "Select Species", choices = species_list)
+        selectInput("species_single", "Select Species", choices = species_list, selected = "Gadus morhua")
       ),
       radioButtons("year", "Select Year",
         choices = year_list,
         selected = max(year_list)
       ),
-      actionButton("update", "Update Map")
-    ),
+      tags$div(
+        style = "margin-top: 20px;",
+        tags$h4("Quick Zoom"),
+        tags$p(
+          "Data may not be visible when viewed at full scale - zoom in to visualise catch overlaps.",
+          style = "font-size: 0.8em; color: #666; margin-top: -10px; margin-bottom: 15px;"
+        ),
+        actionButton("zoom_ra1", "NEAFC RA 1", class = "btn-block"),
+        actionButton("zoom_ra2", "NEAFC RA 2", class = "btn-block"),
+        actionButton("zoom_ra3", "NEAFC RA 3", class = "btn-block")
+      ),
+      actionButton("update", "Update Map"),
+      tags$div(
+      style = "margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px;",
+      tags$h5("Recommended citation", 
+             style = "font-weight: bold; margin-bottom: 10px;"),
+      tags$p(
+        "ICES. 2024. NEAFC Request on discarding in the NEAFC regulatory areas. In Report of the ICES Advisory Committee, 2024. ICES Advice 2024, sr.2024.17, ",
+        tags$a(
+          href = "https://doi.org/10.17895/ices.advice.26947132",
+          "https://doi.org/10.17895/ices.advice.26947132",
+          target = "_blank",
+          style = "word-wrap: break-word;"
+        ),
+        style = "font-size: 0.8em; color: #666; line-height: 1.4;"
+      )
+    )
+  ),
     mainPanel(
       width = 9,
       div(

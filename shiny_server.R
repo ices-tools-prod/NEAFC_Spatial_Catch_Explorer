@@ -18,6 +18,44 @@ server <- function(input, output, session) {
           year == input$year
         )
     }
+    # Function to set map bounds
+    set_map_bounds <- function(lat1, lat2, lon1, lon2) {
+      leafletProxy("map") %>%
+        fitBounds(
+          lng1 = lon1,
+          lat1 = lat1,
+          lng2 = lon2,
+          lat2 = lat2
+        )
+    }
+    
+    # Observers for zoom buttons
+    observeEvent(input$zoom_ra1, {
+      set_map_bounds(
+        lat1 = 53,
+        lat2 = 59,
+        lon1 = -20,  # Note: negative for western longitude
+        lon2 = -13
+      )
+    })
+    
+    observeEvent(input$zoom_ra2, {
+      set_map_bounds(
+        lat1 = 64,
+        lat2 = 72,
+        lon1 = -14,  # West
+        lon2 = 14    # East
+      )
+    })
+    
+    observeEvent(input$zoom_ra3, {
+      set_map_bounds(
+        lat1 = 72,
+        lat2 = 77,
+        lon1 = 30,
+        lon2 = 45
+      )
+    })
     result
   })
 
@@ -118,7 +156,7 @@ server <- function(input, output, session) {
               position = "bottomright",
               pal = pal,
               values = valid_data$total_catch,
-              title = paste(input$species_single, "Catch -", input$year),
+              title = paste(input$species_single, "Catch (kg) -", input$year),
               opacity = 1
             )
         } else {

@@ -7,10 +7,17 @@ library(raster)
 library(lubridate)
 library(htmlwidgets)
 library(sf)
+library(icesVocab)
 
 mkdir("data")
 
 grid_out <- NULL
+
+# Get ASFIS species list and create lookup table
+species_lookup <- getCodeList("SpecASFIS") %>%
+  dplyr::select(Key, Description) %>%
+  # Ensure keys match the format in your data
+  mutate(Key = toupper(Key))
 
 for (i in 2018:2023) {
   vms <- read.csv(paste0("boot/data/NEAFC/NEAFC_TACSAT_", i, ".csv"))
@@ -41,7 +48,7 @@ for (i in 2018:2023) {
   species_cols <- grep("^LE_KG_", names(catch), value = TRUE)
   species_names <- sub("^LE_KG_", "", species_cols)
 
-  # Reshape catch data from wide to long format
+  # transform catch data
   catch_long <- catch %>%
     pivot_longer(
       cols = all_of(species_cols),
@@ -49,8 +56,13 @@ for (i in 2018:2023) {
       values_to = "catch_kg"
     ) %>%
     mutate(species = sub("^LE_KG_", "", species)) %>%
+    # Join with the species lookup table
+    left_join(species_lookup, by = c("species" = "Key")) %>%
+    # Replace the FAO code with the Latin name
+    mutate(species = coalesce(Description, species)) %>%
+    # Filter out zero catches and NA values
     filter(!is.na(catch_kg) & catch_kg > 0)
-
+  
 
   # Process VMS data
   vms_processed <- vms %>%
