@@ -41,10 +41,10 @@ server <- function(input, output, session) {
     
     observeEvent(input$zoom_ra2, {
       set_map_bounds(
-        lat1 = 64,
+        lat1 = 65,
         lat2 = 72,
-        lon1 = -14,  # West
-        lon2 = 14    # East
+        lon1 = -6,  # West
+        lon2 = 8    # East
       )
     })
     
