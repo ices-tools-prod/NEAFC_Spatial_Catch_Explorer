@@ -102,8 +102,8 @@ ui <- fluidPage(
       tags$p(
         "ICES NEAFC Catch Explorer, [date accessed]. ICES, Copenhagen, Denmark.",
         tags$a(
-          href = "https://www.ices.dk/advice/Pages/NEAFC-catch-explorer.aspx",
-          "https://www.ices.dk/advice/Pages/NEAFC-catch-explorer.aspx",
+          href = "https://www.ices.dk/advice/NEAFC-catch-explorer/Pages/NEAFC%20catch%20explorer.aspx",
+          "https://www.ices.dk/advice/NEAFC-catch-explorer/Pages/NEAFC%20catch%20explorer.aspx",
           target = "_blank",
           style = "word-wrap: break-word;"
         ),
